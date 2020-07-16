@@ -11,12 +11,18 @@ from tornado import websocket, web, ioloop
 from pymavlink import mavutil
 from pymavlink.mavutil import mavlink
 
+import datetime
+from tornado.ioloop import IOLoop
+from tornado import gen
 
 logging.basicConfig(level=logging.INFO)
 clients = []
-url = os.environ.get('MAVLINK_ENDPOINT', 'udpin:0.0.0.0:14540')
+url = os.environ.get('MAVLINK_ENDPOINT', 'udpin:0.0.0.0:14550')
 logging.info('Opening MAVLink connection to %s', url)
-mavconn = mavutil.mavlink_connection(url, source_system=255)
+mavconn = mavutil.mavlink_connection(url)
+mavconn.wait_heartbeat()
+print("connected")
+print(mavconn)
 
 
 class MAVLinkClient(websocket.WebSocketHandler):
@@ -36,6 +42,7 @@ class MAVLinkClient(websocket.WebSocketHandler):
         self.outcome_messages = {
             mavlink.MAVLINK_MSG_ID_HEARTBEAT,
             mavlink.MAVLINK_MSG_ID_COMMAND_LONG,
+            mavlink.MAVLINK_MSG_ID_ATTITUDE,
         }
 
         self.message_stamps = {}
@@ -103,18 +110,25 @@ class MAVLinkClient(websocket.WebSocketHandler):
         self.write_message(msg_dict)
 
 
-class MAVLinkReader(Thread):
-    def run(self):
-        logging.info('Starting MAVLink reader thread')
-        while True:
-            msg = mavconn.recv_match(blocking=True)
+@gen.coroutine
+def mavlink_readder():
+    logging.info('Starting MAVLink reader thread')
+    while True:
+        msg = mavconn.recv_match(blocking=False)
+        if msg:
             for client in clients:
                 client.handle_mavlink_message(msg)
+        else:
+            pass
+            #print("empty")
 
+        yield gen.Task(
+            IOLoop.current().add_timeout,
+            datetime.timedelta(milliseconds=1))
 
-reader = MAVLinkReader()
-reader.daemon = True
-reader.start()
+#reader = MAVLinkReader()
+#reader.daemon = True
+#reader.start()
 
 
 app = web.Application([
@@ -125,4 +139,5 @@ app = web.Application([
 if __name__ == '__main__':
     logging.info('Starting web socket server')
     app.listen(17437)
+    mavlink_readder()
     ioloop.IOLoop.instance().start()

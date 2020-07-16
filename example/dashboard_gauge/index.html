@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+	<head>
+		<meta charset="utf-8"/>
+
+
+
+    <title>Gauge</title>
+
+    <script src="../lib/Skyhawk-Flight-Instruments/js/jquery-1.11.3.js"></script>
+    <script src="../lib/Skyhawk-Flight-Instruments/js/d3.min.js"></script>
+    <script src="../lib/Skyhawk-Flight-Instruments/js/jquery.flightindicators.js"></script>
+    <link rel="stylesheet" type="text/css" href="../lib/Skyhawk-Flight-Instruments/css/flightindicators.css" />
+    <script src="../lib/Skyhawk-Flight-Instruments/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../lib/Skyhawk-Flight-Instruments/css/bootstrap.min.css" />
+
+
+<!--
+		<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+		<script src="https://d3js.org/d3.v5.min.js"></script> -->
+	<!-- <script src="../lib/Skyhawk-Flight-Instruments/js/jquery.flightindicators.js"></script>
+	<link rel="stylesheet" type="text/css" href="../lib/Skyhawk-Flight-Instruments/css/flightindicators.css" /> -->
+
+
+		<!-- <link rel="stylesheet" href="main.css"/> -->
+	</head>
+	<body>
+		<div class="gauge">
+
+			<span id="attitude"></span>
+
+
+		</div>
+
+
+
+    <div class="examples text-center">
+        <div>
+            <span id="airspeed"></span>
+        </div>
+        <div>
+            <button id="airspeedButton" class="btn btn-default" type="submit">Button</button>
+        </div>
+    </div>
+
+		<div class="vehicles">
+			<template class="vehicle">
+				<div class="vehicle">
+					<div class="id"></div>
+					<div class="mode"></div>
+					<div>hdg: <span class="heading">N/A</div></span>
+					<div>alt: <span class="altitude">N/A</div></span>
+					<button data-command="land" class="command">Land</button>
+					<button data-command="run-mission" class="command">Run mission</button>
+					<button data-command="open" class="command">Open</button>
+					<button data-command="close" class="command">Close</button>
+				</div>
+			</template>
+		</div>
+		<script type="text/javascript" src="index.js"></script>
+	</body>
+</html>
+
+
+<script type="text/javascript">
+
+var attitude = $.flightIndicator('#attitude', 'attitude', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
+attitude.setRoll(30); // Sets the roll to 30 degrees
+
+
+</script>
+
+
+
+    <script type="text/javascript">
+
+
+        var increment = 0;
+        var airspeed = $.flightIndicator('#airspeed', type = 'airspeed', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
+
+        function sleep(milliseconds) {
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds) break;
+            }
+        }
+
+        function doAirSpeed(){
+
+          var myInterval = setInterval(function() {
+
+            // Airspeed update
+            airspeed.setAirSpeed(increment);
+            increment++;
+
+            if(increment == 300){
+                clearInterval(myInterval);
+                sleep(1000);
+                $("#airspeedButton").attr('disabled',false);
+                $("#airspeedButton").text("Start");
+                increment = 0;
+                airspeed.setAirSpeed(0);
+            }
+
+            }, 50);
+
+        }
+
+        $("#airspeedButton").text("Start");
+        $("#airspeedButton").on("click", function() {
+            $("#airspeedButton").attr('disabled', true);
+            $("#airspeedButton").text("Playing");
+            doAirSpeed();
+        });
+
+  </script>

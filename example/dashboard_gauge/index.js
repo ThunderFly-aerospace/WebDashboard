@@ -11,11 +11,13 @@ const MAV_MODE_FLAG_MANUAL_INPUT_ENABLED = 64;
 const MAV_MODE_FLAG_SAFETY_ARMED = 128;
 const MAV_TYPE_GCS = 6;
 const MAV_TYPE_CHARGING_STATION = 31;
+const MAV_RAW_RPM = 339;
+const MAV_ATTITUDE = 30;
 const PX4_CUSTOM_MAIN_MODE_AUTO = 4;
 const PX4_CUSTOM_SUB_MODE_AUTO_LAND = 6;
 
 var sock = new WebSocket('ws://127.0.0.1:17437/mavlink');
-var map;
+
 var placemarks = {};
 var vehicles = $('.vehicles');
 
@@ -58,6 +60,7 @@ sock.onmessage = function(e) {
 	var msg = JSON.parse(e.data);
 	var sysid = msg.sysid;
 	var vehicle = vehicles.find('.vehicle[data-id=' + sysid + ']');
+	//console.log(vehicle, msg);
 
 	if (msg.msgid == MAVLINK_MSG_HEARTBEAT) {
 		// https://mavlink.io/en/messages/common.html#HEARTBEAT
@@ -78,25 +81,10 @@ sock.onmessage = function(e) {
 		vehicle.find('.mode').html(mode || 'UNKNOWN');
 		vehicle.toggleClass('armed', Boolean(msg.base_mode & MAV_MODE_FLAG_SAFETY_ARMED));
 
-	} else if (msg.msgid == MAVLINK_MSG_GLOBAL_POSITION_INT && map) {
+	} else if (msg.msgid == MAVLINK_MSG_GLOBAL_POSITION_INT) {
 		// https://mavlink.io/en/messages/common.html#GLOBAL_POSITION_INT
 		var pos = [msg.lat / 1e7, msg.lon / 1e7];
 
-		if (!placemarks[sysid]) {
-			placemarks[sysid] = new ymaps.Placemark(pos, {
-				iconCaption: 'Vehicle ' + sysid
-			}, {
-				preset: 'islands#blueCircleDotIconWithCaption'
-			});
-			map.geoObjects.add(placemarks[sysid]);
-
-			// Set the center on first show
-			map.setCenter(pos, 18);
-		} else {
-			placemarks[sysid].geometry.setCoordinates(pos);
-		}
-		vehicle.find('.heading').html((msg.hdg / 100) + '&deg;');
-		vehicle.find('.altitude').html((msg.relative_alt / 1000).toFixed(1) + ' m');
 
 	} else if (msg.msgid == MAVLINK_MSG_ALTITUDE) {
 		// https://mavlink.io/en/messages/common.html#ALTITUDE
@@ -104,6 +92,12 @@ sock.onmessage = function(e) {
 			placemarks[sysid].properties.set('iconCaption',
 				'Vehicle ' + sysid + ' (alt: ' + Math.round(msg.altitude_relative) + ')');
 		}
+	} else if (msg.msgid == MAV_ATTITUDE) {
+			console.log("Attitude", msg.roll);
+			attitude.setRoll(msg.roll * 180 / Math.PI);
+			attitude.setPitch(msg.pitch * 180 / Math.PI);
+	} else if (msg.msgid == MAV_RAW_RPM) {
+			console.log("RPM", msg);
 	}
 }
 
@@ -206,14 +200,6 @@ $('body').on('click', '.command', function(e) {
 	}
 })
 
-ymaps.ready(function() {
-	map = new ymaps.Map($('.map').get(0), {
-		center: [55.76, 37.64],
-		height: 300,
-		zoom: 7,
-		controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
-	});
-});
 
 /*
 // Send HEARTBEATs. Normally it's not needed.
