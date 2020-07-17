@@ -1,6 +1,3 @@
-[submodule "example/lib/mavlink-websocket"]
-	path = example/lib/mavlink-websocket
-	url = git@github.com:ThunderFly-aerospace/mavlink-websocket.git
 [submodule "example/lib/Skyhawk-Flight-Instruments"]
 	path = example/lib/Skyhawk-Flight-Instruments
-	url = git@github.com:uw-ray/Skyhawk-Flight-Instruments.git
+	url = git@github.com:ThunderFly-aerospace/Skyhawk-Flight-Instruments.git
