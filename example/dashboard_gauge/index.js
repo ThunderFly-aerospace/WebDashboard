@@ -13,6 +13,7 @@ const MAV_TYPE_GCS = 6;
 const MAV_TYPE_CHARGING_STATION = 31;
 const MAV_RAW_RPM = 339;
 const MAV_ATTITUDE = 30;
+const MAV_VFR_HUD = 74;
 const PX4_CUSTOM_MAIN_MODE_AUTO = 4;
 const PX4_CUSTOM_SUB_MODE_AUTO_LAND = 6;
 
@@ -60,7 +61,7 @@ sock.onmessage = function(e) {
 	var msg = JSON.parse(e.data);
 	var sysid = msg.sysid;
 	var vehicle = vehicles.find('.vehicle[data-id=' + sysid + ']');
-	//console.log(vehicle, msg);
+	// console.log(vehicle, msg);
 
 	if (msg.msgid == MAVLINK_MSG_HEARTBEAT) {
 		// https://mavlink.io/en/messages/common.html#HEARTBEAT
@@ -93,11 +94,13 @@ sock.onmessage = function(e) {
 				'Vehicle ' + sysid + ' (alt: ' + Math.round(msg.altitude_relative) + ')');
 		}
 	} else if (msg.msgid == MAV_ATTITUDE) {
-			console.log("Attitude", msg.roll);
 			attitude.setRoll(msg.roll * 180 / Math.PI);
 			attitude.setPitch(msg.pitch * 180 / Math.PI);
 	} else if (msg.msgid == MAV_RAW_RPM) {
-			console.log("RPM", msg);
+			rpm.setRPM(msg.frequency);
+	} else if (msg.msgid == MAV_VFR_HUD) {
+			airspeed.setAirSpeed(msg.airspeed);
+			heading.setHeading(msg.heading);
 	}
 }
 

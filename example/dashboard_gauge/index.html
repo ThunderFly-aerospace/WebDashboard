@@ -23,26 +23,20 @@
 	<link rel="stylesheet" type="text/css" href="../lib/Skyhawk-Flight-Instruments/css/flightindicators.css" /> -->
 
 
-		<!-- <link rel="stylesheet" href="main.css"/> -->
+	<link rel="stylesheet" href="main.css"/>
 	</head>
 	<body>
 		<div class="gauge">
 
 			<span id="attitude"></span>
+      <span id="airspeed"></span>
+      <span id="rpm"></span>
+      <span id="heading"></span>
+      <span id="altimeter"></span>
 
 
 		</div>
 
-
-
-    <div class="examples text-center">
-        <div>
-            <span id="airspeed"></span>
-        </div>
-        <div>
-            <button id="airspeedButton" class="btn btn-default" type="submit">Button</button>
-        </div>
-    </div>
 
 		<div class="vehicles">
 			<template class="vehicle">
@@ -66,6 +60,9 @@
 <script type="text/javascript">
 
 var attitude = $.flightIndicator('#attitude', 'attitude', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
+var altimeter = $.flightIndicator('#altimeter', 'altimeter', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
+var heading = $.flightIndicator('#heading', 'heading', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
+var rpm = $.flightIndicator('#rpm', 'rpm', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
 attitude.setRoll(30); // Sets the roll to 30 degrees
 
 
