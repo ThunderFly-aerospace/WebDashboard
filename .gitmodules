@@ -1,3 +1,6 @@
 [submodule "example/lib/Skyhawk-Flight-Instruments"]
 	path = example/lib/Skyhawk-Flight-Instruments
-	url = git@github.com:ThunderFly-aerospace/Skyhawk-Flight-Instruments.git
+	url = git@github.com:ThunderFly-aerospace/DigitalValueIndicators.git
+[submodule "example/lib/DigitalValueIndicators"]
+	path = example/lib/DigitalValueIndicators
+	url = git@github.com:ThunderFly-aerospace/DigitalValueIndicators.git
