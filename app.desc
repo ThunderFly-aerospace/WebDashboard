@@ -1,0 +1,4 @@
+[START]
+echo "[Flight]: Application starts"
+[REQUIRED]
+browser -$APP_PATH/example/dashboard_gauge/index.html CORS CERTERR
