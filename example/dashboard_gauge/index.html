@@ -2,18 +2,20 @@
 <meta charset="utf-8">
 <html>
 	<head>
+
+<meta name="theme-color" content="#fbba00">
 		<meta charset="utf-8"/>
 
 
 
     <title>Gauge</title>
 
-    <script src="../lib/Skyhawk-Flight-Instruments/js/jquery-1.11.3.js"></script>
-    <script src="../lib/Skyhawk-Flight-Instruments/js/d3.min.js"></script>
-    <script src="../lib/Skyhawk-Flight-Instruments/js/jquery.flightindicators.js"></script>
-    <link rel="stylesheet" type="text/css" href="../lib/Skyhawk-Flight-Instruments/css/flightindicators.css" />
-    <script src="../lib/Skyhawk-Flight-Instruments/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../lib/Skyhawk-Flight-Instruments/css/bootstrap.min.css" />
+    <script src="../lib/DigitalValueIndicators/js/jquery-1.11.3.js"></script>
+    <script src="../lib/DigitalValueIndicators/js/d3.min.js"></script>
+    <script src="../lib/DigitalValueIndicators/js/jquery.flightindicators.js"></script>
+    <link rel="stylesheet" type="text/css" href="../lib/DigitalValueIndicators/css/flightindicators.css" />
+    <script src="../lib/DigitalValueIndicators/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../lib/DigitalValueIndicators/css/bootstrap.min.css" />
 
 
 <!--
@@ -52,6 +54,8 @@
 				</div>
 			</template>
 		</div>
+			<hr>
+			<a href="../index.html">go back</a>
 		<script type="text/javascript" src="index.js"></script>
 	</body>
 </html>
@@ -59,11 +63,11 @@
 
 <script type="text/javascript">
 
-var attitude = $.flightIndicator('#attitude', 'attitude', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
-var altimeter = $.flightIndicator('#altimeter', 'altimeter', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
-var heading = $.flightIndicator('#heading', 'heading', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
-var rpm = $.flightIndicator('#rpm', 'rpm', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
-attitude.setRoll(30); // Sets the roll to 30 degrees
+var attitude = $.flightIndicator('#attitude', 'attitude', {img_directory:'../lib/DigitalValueIndicators/img/'});
+var altimeter = $.flightIndicator('#altimeter', 'altimeter', {img_directory:'../lib/DigitalValueIndicators/img/'});
+var heading = $.flightIndicator('#heading', 'heading', {img_directory:'../lib/DigitalValueIndicators/img/'});
+var rpm = $.flightIndicator('#rpm', 'rpm', {img_directory:'../lib/DigitalValueIndicators/img/'});
+// attitude.setRoll(30); // Sets the roll to 30 degrees
 
 
 </script>
@@ -74,7 +78,7 @@ attitude.setRoll(30); // Sets the roll to 30 degrees
 
 
         var increment = 0;
-        var airspeed = $.flightIndicator('#airspeed', type = 'airspeed', {img_directory:'../lib/Skyhawk-Flight-Instruments/img/'});
+        var airspeed = $.flightIndicator('#airspeed', type = 'airspeed', {img_directory:'../lib/DigitalValueIndicators/img/'});
 
         function sleep(milliseconds) {
             var start = new Date().getTime();
