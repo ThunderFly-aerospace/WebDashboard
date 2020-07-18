@@ -17,7 +17,6 @@ const MAV_VFR_HUD = 74;
 const PX4_CUSTOM_MAIN_MODE_AUTO = 4;
 const PX4_CUSTOM_SUB_MODE_AUTO_LAND = 6;
 
-//var sock = new WebSocket('ws://192.168.1.134:17437/mavlink');
 var sock = new WebSocket('ws://192.168.1.20:17437/mavlink');
 //var sock = new WebSocket('ws://127.0.0.1:17437/mavlink');
 
