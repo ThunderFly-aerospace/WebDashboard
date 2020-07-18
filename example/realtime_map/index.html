@@ -42,6 +42,13 @@
       height: 100%;
   }
 
+  #fixedbutton {
+	  z-index: 1000;
+	  position: absolute;
+	  bottom: 10px;
+	  right: 10px; 
+  }
+
 
   </style>
 
@@ -58,7 +65,10 @@
 
 
          <div id="mapid"></div>
-
+			
+		 <form method="get" id="fixedbutton" action="../index.html">
+			 <button type="submit">Go Back</button>
+		 </form>
 
 		<script type="text/javascript" src="index.js"></script>
         <script>
