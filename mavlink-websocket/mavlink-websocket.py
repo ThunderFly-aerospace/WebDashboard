@@ -18,6 +18,9 @@ from tornado import gen
 logging.basicConfig(level=logging.INFO)
 clients = []
 url = os.environ.get('MAVLINK_ENDPOINT', 'udpin:0.0.0.0:14550')
+#url = os.environ.get('MAVLINK_ENDPOINT', 'udpin:127.0.0.1:14550')
+#url = os.environ.get('MAVLINK_ENDPOINT', 'udpin:localhost:14550')
+
 logging.info('Opening MAVLink connection to %s', url)
 mavconn = mavutil.mavlink_connection(url)
 mavconn.wait_heartbeat()
@@ -107,6 +110,8 @@ class MAVLinkClient(websocket.WebSocketHandler):
         for key in msg_dict:
             if  isinstance(msg_dict[key], float) and math.isnan(msg_dict[key]):
                 msg_dict[key] = None
+
+        # print(msg_dict)
 
         # pass message
         self.write_message(msg_dict)
