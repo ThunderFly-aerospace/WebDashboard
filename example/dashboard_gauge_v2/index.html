@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+	<head>
+
+<meta name="theme-color" content="#fbba00">
+		<meta charset="utf-8"/>
+
+
+
+    <title>Gauge</title>
+
+    <script src="../lib/DigitalValueIndicators/js/jquery-1.11.3.js"></script>
+    <script src="../lib/DigitalValueIndicators/js/d3.min.js"></script>
+    <script src="../lib/DigitalValueIndicators/js/jquery.flightindicators.js"></script>
+    <link rel="stylesheet" type="text/css" href="../lib/DigitalValueIndicators/css/flightindicators.css" />
+    <script src="../lib/DigitalValueIndicators/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="../lib/DigitalValueIndicators/css/bootstrap.min.css" />
+    <style>
+	.gauges {
+		display: none;
+	}
+
+	.selector {
+		width: 200px;
+		height: 50px;
+		font-size: 20px;
+	}
+	
+	  #fixedbutton {
+		  z-index: 1000;
+		  position: absolute;
+		  bottom: 10px;
+		  right: 10px; 
+	  }
+    </style>
+<!--
+		<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+		<script src="https://d3js.org/d3.v5.min.js"></script> -->
+	<!-- <script src="../lib/Skyhawk-Flight-Instruments/js/jquery.flightindicators.js"></script>
+	<link rel="stylesheet" type="text/css" href="../lib/Skyhawk-Flight-Instruments/css/flightindicators.css" /> -->
+
+
+	<link rel="stylesheet" href="main.css"/>
+	</head>
+	<body>
+		<div class="gauge">
+			 <select id="mySelection" class="selector">
+				 <option value="attitude">attitude</option>
+				 <option value="airspeed" selected>airspeed</option>
+				 <option value="rpm">rpm</option>
+				 <option value="heading">heading</option>
+				 <option value="altimeter">altimeter</option>
+			 </select>
+			 <select id="mySelection2" class="selector">
+				 <option value="attitude">attitude</option>
+				 <option value="airspeed">airspeed</option>
+				 <option value="rpm" selected>rpm</option>
+				 <option value="heading">heading</option>
+				 <option value="altimeter">altimeter</option>
+			 </select>
+			 <div>
+				<span id="attitude" class="gauges"></span>
+				<span id="airspeed" class="gauges"></span>
+				<span id="rpm" class="gauges"></span>
+				<span id="heading" class="gauges"></span>
+				<span id="altimeter" class="gauges"></span>
+			 </div>
+		</div>
+
+
+		<div class="vehicles">
+			<template class="vehicle">
+				<div class="vehicle">
+					<div class="id"></div>
+					<div class="mode"></div>
+					<div>hdg: <span class="heading">N/A</div></span>
+					<div>alt: <span class="altitude">N/A</div></span>
+					<button data-command="land" class="command">Land</button>
+					<button data-command="run-mission" class="command">Run mission</button>
+					<button data-command="open" class="command">Open</button>
+					<button data-command="close" class="command">Close</button>
+				</div>
+			</template>
+		</div>
+		 <form method="get" id="fixedbutton" action="../index.html">
+			 <button type="submit">Go Back</button>
+		 </form>
+		<script type="text/javascript" src="index.js"></script>
+	</body>
+</html>
+
+
+<script type="text/javascript">
+
+var attitude = $.flightIndicator('#attitude', 'attitude', {img_directory:'../lib/DigitalValueIndicators/img/', size: 390});
+var altimeter = $.flightIndicator('#altimeter', 'altimeter', {img_directory:'../lib/DigitalValueIndicators/img/', size: 390});
+var heading = $.flightIndicator('#heading', 'heading', {img_directory:'../lib/DigitalValueIndicators/img/', size: 390});
+var rpm = $.flightIndicator('#rpm', 'rpm', {img_directory:'../lib/DigitalValueIndicators/img/', size: 390});
+// attitude.setRoll(30); // Sets the roll to 30 degrees
+
+
+</script>
+
+
+
+    <script type="text/javascript">
+
+
+        var increment = 0;
+        var airspeed = $.flightIndicator('#airspeed', type = 'airspeed', {img_directory:'../lib/DigitalValueIndicators/img/', size: 390});
+
+        function sleep(milliseconds) {
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds) break;
+            }
+        }
+
+        function doAirSpeed(){
+
+          var myInterval = setInterval(function() {
+
+            // Airspeed update
+            airspeed.setAirSpeed(increment);
+            increment++;
+
+            if(increment == 300){
+                clearInterval(myInterval);
+                sleep(1000);
+                $("#airspeedButton").attr('disabled',false);
+                $("#airspeedButton").text("Start");
+                increment = 0;
+                airspeed.setAirSpeed(0);
+            }
+
+            }, 50);
+
+        }
+
+        $("#airspeedButton").text("Start");
+        $("#airspeedButton").on("click", function() {
+            $("#airspeedButton").attr('disabled', true);
+            $("#airspeedButton").text("Playing");
+            doAirSpeed();
+        });
+
+  </script>
+
+
+<script>
+	
+    function redraw(){
+        var demovalue = $("#mySelection").val();
+        var demovalue2 = $("#mySelection2").val();
+        $(".gauges").hide();
+        $("#" + demovalue).show();
+        $("#" + demovalue2).show();
+    }
+    
+    $(document).ready(redraw());
+    $('.selector').on('change', redraw);
+
+
+   // $(document).ready(function(){
+   //     $('.selector').on('change', function(){
+   //         var demovalue = $("#mySelection").val();
+   //         var demovalue2 = $("#mySelection2").val();
+   //         $(".gauges").hide();
+   //         $("#" + demovalue).show();
+   //         $("#" + demovalue2).show();
+   //     });
+   //  });
+</script>
+
