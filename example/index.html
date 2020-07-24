@@ -1,18 +1,68 @@
 <html>
 	<head>
-		<style>
+
+  <link rel="stylesheet" href="/lib/tf.css">
+  <style>
 
     body {
-        font-size: 5em;
+	background-color: #2E2D2C;
+        font-size: 3em;
+	/* width: 100%; */
+	
+	padding: 0;
+	margin: 0;
     }
 
-</style>
-	</head>
-	<body>
+    .center {   
+       display: block;
+       margin-left: auto;
+       margin-right: auto;
+       width: 50%;
+    }
 
-		<a href="dashboard_gauge/index.html">Gauge</a><br>
-		<a href="realtime_map/index.html">Map</a><br>
-		<a href="dashboard_gauge_v2/index.html">Gauge V2.0</a><br>
-		<a href="dashboard_gauge_v3/index.html">Gauge V3.0(not working)</a><br>
-	</body>
+    a.button {
+        /* -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+	*/
+
+        text-decoration: none;
+        color: initial;
+
+	border: #FBBA00 solid 2px;
+        border-radius: 0.3em;
+
+	padding: 0.1em;
+        margin: 0.2em;
+        
+        max-width: 20%;
+        float: left;
+
+    }
+
+
+  </style>
+</head>
+  <body>
+
+
+    <div>
+        <img src="/lib/media/tf_logo.png" style="max-width: 15cm; width: 10cm;"  class="center"></img>
+    </div>
+
+
+    <div style="display: flex">
+		<a class="button" href="realtime_map/index.html">Map</a>
+		<a class="button" href="dashboard_gauge_v2/index.html">Gauge</a>
+    </div>
+
+<hr>
+    <div style="display: flex; font-size: 0.6em;">
+                <a class="button" href="dashboard_gauge/index.html">Gauge</a>
+                <a class="button" href="realtime_map/index.html">Map</a>
+                <a class="button" href="dashboard_gauge_v2/index.html">Gauge V2.0</a>
+                <a class="button" href="dashboard_gauge_v3/index.html">Gauge V3.0</a>
+    </div>
+
+  </body>
 </html>
